@@ -165,7 +165,66 @@ int index(Str str, Str substr)
 //KMP算法，包含getnext，KMP
 void getnext(Str substr, int next[])
 {
-	
+	int i = 1, j = 0;
+	next[i] = 0;
+	while (i<=substr.length)
+	{
+		if (j == 0 || substr.ch[i] == substr.ch[j])
+		{
+			++i, ++j;
+			next[i] = j;
+		}
+		else
+		{
+			j = next[j];
+		}
+	}
+}
+int KMP(Str str, Str substr, int next[])
+{
+	int i = 1, j = 1;
+	while (i<=str.length&&j<=substr.length)
+	{
+		if (j==0||str.ch[i] == substr.ch[j])
+		{
+			++i, ++j;
+		}
+		else
+		{
+			j = next[j];
+		}
+	}
+	if (j>substr.length)
+	{
+		return i - substr.length;
+	}
+	else return 0;
+}
+
+//KMP算法改进，nextval替换next，省去不必要的过程(在getnext基础上添加代码)
+void getnextval(Str substr, int nextval[])
+{
+	int i = 1, j = 0;
+	nextval[i] = 0;
+	while (i <= substr.length)
+	{
+		if (j == 0 || substr.ch[i] == substr.ch[j])
+		{
+			++i, ++j;
+			if (substr.ch[i] != substr.ch[j])
+			{
+				nextval[i] = j;
+			}
+			else
+			{
+				nextval[i] = nextval[j];
+			}
+		}
+		else
+		{
+			j = nextval[j];
+		}
+	}
 }
 
 
